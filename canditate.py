@@ -1,22 +1,42 @@
+from helper import load_from_file, save_to_file
+
+
 class Candidate:
-    sn=1
+    sn=0
+    filename="candidates.json"
     def __init__(self):
         self.candidates=[]
+        self.candidates.extend(load_from_file(self.filename))
     
+    @classmethod
+    def get_id(cls):
+        data=load_from_file(cls.filename)
+        max=1
+        for d in data:
+            if d["id"]>max:
+                max=data["id"]
+        return max
+            
+
 
 
     def add_candidate(self,user):
         try:
             if user["role"]=="admin":
-                can={"id":self.sn}            
+                can={}            
                 name=str(input("Enter your name: ")).strip()
                 party=str(input("Enter your party name: ")).strip()
                 cfrom=str(input("Enter from where you are taking candency: ")).strip()
                 if name and party and cfrom:
                     can.update({"cname":name,"cparty":party,"cfrom":cfrom})
-                    self.candidates.append(can)
-                    self.sn+=1
-                    print("Candidate added")
+                    if any(candidate["cname"] == can["cname"] and candidate["cparty"] == can["cparty"] and
+                           candidate["cfrom"] == can["cfrom"] for candidate in self.candidates):
+                        print("Candidate already exists")
+                    else:
+                        can["id"]=Candidate.get_id()+1
+                        self.candidates.append(can)
+                        self.sn+=1
+                        print("Candidate added")
                 else:
                     print("You must fill all the required fields")
             else:
@@ -114,5 +134,9 @@ while True:
 
         case "v":
             c.view_candidate()
+        case "e":
+            print("Exitting")
+            save_to_file(c.filename,c.candidates)
+            break
         case _:
             print("Invalid command")
