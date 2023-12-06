@@ -106,6 +106,24 @@ class Voter:
             if data['id'] == id:
                 return True
         return False
+    
+    def delete_voter(self):
+        voter_id = int(input('Enter VoterID: '))
+        voter_exists = self.exists_voter(voter_id)
+        if voter_exists:
+            with open('voterlist.txt', 'r') as file:
+                data_list = [json.loads(line) for line in file]
+
+            data_list = [data for data in data_list if data['id'] != voter_id]
+
+            with open('voterlist.txt', 'w') as file:
+                for data in data_list:
+                    file.write(json.dumps(data) + '\n')
+
+            print(f'Voter with ID {voter_id} deleted successfully!')
+        else:
+            print('Voter not found!')
+        
 # Example usage
 v = Voter()
-v.update_voter()
+v.delete_voter()
