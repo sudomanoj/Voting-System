@@ -3,19 +3,17 @@ from helper import load_from_file, save_to_file
 
 class Candidate:
     sn=0
-    filename="candidates.json"
+    filename="candidates.txt"
     def __init__(self):
         self.candidates=[]
         self.candidates.extend(load_from_file(self.filename))
     
-    @classmethod
-    def get_id(cls):
-        data=load_from_file(cls.filename)
-        max=1
-        for d in data:
-            if d["id"]>max:
-                max=data["id"]
-        return max
+    def update_id(self):
+        data=self.candidates
+        id_values = [item["id"] for item in data]
+        self.sn = max(id_values) + 1 if id_values else 1
+
+        
             
 
 
@@ -33,7 +31,8 @@ class Candidate:
                            candidate["cfrom"] == can["cfrom"] for candidate in self.candidates):
                         print("Candidate already exists")
                     else:
-                        can["id"]=Candidate.get_id()+1
+                        self.update_id()
+                        can["id"]=self.sn
                         self.candidates.append(can)
                         self.sn+=1
                         print("Candidate added")
@@ -55,18 +54,34 @@ class Candidate:
                     name=str(input("Enter your name: ")).strip()
                     party=str(input("Enter your party name: ")).strip()
                     cfrom=str(input("Enter from where you are taking candency: ")).strip()
-                    if name:
-                        candidate["cname"]=name
-                    if party:
-                        candidate["cparty"]=party
-                    if cfrom:
-                        candidate["cfrom"]=party
-                    if name or party or cfrom:
-                        print("Candidate upadted successfully")
-                    else:
-                        print("No change in candidate")
 
-                    
+                    # check if the same candidate exists already
+                    found=0
+                    if name:
+                        names=[c["cname"] for c in self.candidates ]
+                        if name in names:
+                            found+=1
+                    if party:
+                        parties=[c["cparty"] for c in self.candidates ]
+                        if party in parties:
+                            found+=1
+                    if cfrom:
+                        fromc=[c["cfrom"] for c in self.candidates ]
+                        if cfrom in fromc:
+                            found+=1
+
+                    # update candidate if same candidate doesnot exist
+                    if not found==3:
+                        if name:
+                            candidate["cname"]=name
+                        if party:
+                            candidate["cparty"]=party
+                        if cfrom:
+                            candidate["cfrom"]=cfrom
+                        print("Candidate upadted successfully " if any([name,party,cfrom]) else "No change in candidate")
+                    else:
+                        print("Candidate with same details already exists")
+                   
                 else:
                     print("Invalid candidate Id")
 
