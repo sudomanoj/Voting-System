@@ -123,7 +123,26 @@ class Voter:
             print(f'Voter with ID {voter_id} deleted successfully!')
         else:
             print('Voter not found!')
+            
+    def search_voter(self):
+        voter_id = int(input('Enter VoterID: '))
+        voter_exists = self.exists_voter(voter_id)
+        if voter_exists:
+            with open('voterlist.txt', 'r') as file:
+                data_list = [json.loads(line) for line in file]
+            for data in data_list:
+                if data['id'] == voter_id:
+                    print(f"""
+ID : {data['id']}
+Name : {data['name']}
+DOB : {data['dob']}
+Address : {data['address']}
+Password : {data['password']}
+                          """)
+
+        else:
+            print(f'Voter with ID {voter_id} not found!!')
         
 # Example usage
 v = Voter()
-v.delete_voter()
+v.search_voter()
