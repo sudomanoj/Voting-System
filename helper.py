@@ -18,5 +18,5 @@ def load_from_file(filename):
         else:
             return []
     except Exception as e:
-        print(f"Error loading book data: {e}")
+        print(f"Error loading  data: {e}")
         return []

@@ -20,7 +20,7 @@ class Candidate:
 
     def add_candidate(self):
         try:
-            can={}            
+            can={"vote_count":0}            
             name=str(input("Enter your name: ")).strip()
             party=str(input("Enter your party name: ")).strip()
             cfrom=str(input("Enter from where you are taking candency: ")).strip()

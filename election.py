@@ -21,15 +21,15 @@ class Election:
                             c["id"],
                             c["cname"],
                             c["cfrom"],
-                            c["party"]
+                            c["cparty"]
                         ))
-                vote_to=input("Enter Candidate id").strip()
+                vote_to=int(input("Enter Candidate id"))
                 candidate=next((i for i in cands if i["id"]==vote_to),None)
                 if candidate:
-                    if not candidate["vote"]:
-                        candidate["vote"]=1
+                    if not candidate["vote_count"]:
+                        candidate["vote_count"]=1
                     else:
-                        candidate["vote"]+=1
+                        candidate["vote_count"]+=1
                     print(f"Voted to candidate with id {vote_to}")
                 else:
                     print("Invalid candidate id")
@@ -41,7 +41,7 @@ class Election:
     def result(self,cands):
         try:
             if cands:
-                sorted_cands = sorted(cands, key=lambda c: c['vote']) 
+                sorted_cands = sorted(cands, key=lambda c: c['vote_count']) 
                 winner=sorted_cands[0]
                 winner_name=winner["cname"]
                 winner_from=winner["cfrom"]
@@ -60,7 +60,7 @@ class Election:
                             c["id"],
                             c["cname"],
                             c["cfrom"],
-                            c["party"]
+                            c["cparty"]
                         ))
                 save_to_file("Election_result.txt",sorted_cands)
 

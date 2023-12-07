@@ -3,31 +3,24 @@ from datetime import datetime
 
 from helper import load_from_file
 
-class Idcounter:
-    id = 0
-
-    
-    @classmethod
-    def get_next_id(cls):
-        with open('voterid.log', 'r') as file:
-            for f in file:
-                cls.id = int(f)
-        cls.id += 1
-        with open('voterid.log', 'w') as file:
-            file.write(str(cls.id))
-        return cls.id
+   
+        
 
 class Voter:
+    id = 0
     filename="voterlist.txt"
 
-    def __init__(self) -> None:
+    def get_next_id(self):
+        data=self.voter_list
+        id_values = [item["id"] for item in data]
+        self.id = max(id_values) + 1 if id_values else 1
+
+    def __init__(self):
         self.voter_list = []
         self.voter_list.extend(load_from_file(self.filename))
-
     
     def registration(self):
         while True:
-            voter_id = Idcounter.get_next_id()
             name = input('Enter Name: ')
             dob_str = input("Enter your date of birth (YYYY-MM-DD): ")
 
@@ -49,7 +42,9 @@ class Voter:
         age = self.calculate_age(dob)
         
         if age >= 18:
-            voter_dict = {'id': voter_id, "role":"voter",'name': name, 'dob': dob_str, 'address': address, 'password': password}
+            self.get_next_id()
+    
+            voter_dict = {'id': self.id, "role":"voter","voted":0,'name': name, 'dob': dob_str, 'address': address, 'password': password}
             self.voter_list.append(voter_dict)
             print('Voter added')
         else:
@@ -57,9 +52,8 @@ class Voter:
 
     def check_voter(self, name, dob, address):
         if self.voter_list:
-            for voter in self.voter_list:
-                if any(voter['name'] ==name and voter['dob'] == dob and voter['address'] == address):
-                    return True
+            if any(voter['name'] ==name and voter['dob'] == dob and voter['address'] == address for voter in self.voter_list):
+                return True
         else:
             return False
 
@@ -99,8 +93,7 @@ class Voter:
         
     def exists_voter(self, id):
         if self.voter_list:
-            for voter in self.voter_list:
-                if id == voter['id']:
+                if id in [voter["id"] for voter in self.voter_list]:
                     return True
                 else:
                     return False
