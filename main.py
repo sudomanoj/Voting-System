@@ -1,7 +1,8 @@
+from datetime import date, datetime
 from canditate import Candidate
 from constituency import Constituency
 from election import Election
-from helper import save_to_file
+from helper import load_from_file, save_to_file
 from voter import Voter
 
 
@@ -99,10 +100,15 @@ class ElectionManger:
                         print("Please login to proceed, Also you must be admin")
                         self.login_user()  
 
-                        
+
                 case "9":
                     if self.user and self.user["role"]=="voter":
-                        self.election.vote(self.candidate.candidates)
+                        data=load_from_file("constituency.txt")
+                        if data["date_of_election"]==date.today():
+                            self.election.vote(self.candidate.candidates)
+                        else:
+                            print("Election is not today,You cannot vote now")
+
                     else:
                         print("Please login to proceed")
                         self.login_user()  

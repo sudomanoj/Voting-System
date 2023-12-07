@@ -11,23 +11,29 @@ class Election:
                 ins[2],
                 ins[3]
             ))
-        for c in cands:
-            print("| {:^4} | {:^20} | {:^20} | {:^20} | \n".format(
-                    c["id"],
-                    c["cname"],
-                    c["cfrom"],
-                    c["party"]
-                ))
-        vote_to=input("Enter Candidate id").strip()
-        candidate=next((i for i in cands if i["id"]==vote_to),None)
-        if candidate:
-            if not candidate["vote"]:
-                candidate["vote"]=1
+        try:
+            if cands:
+                for c in cands:
+                    print("| {:^4} | {:^20} | {:^20} | {:^20} | \n".format(
+                            c["id"],
+                            c["cname"],
+                            c["cfrom"],
+                            c["party"]
+                        ))
+                vote_to=input("Enter Candidate id").strip()
+                candidate=next((i for i in cands if i["id"]==vote_to),None)
+                if candidate:
+                    if not candidate["vote"]:
+                        candidate["vote"]=1
+                    else:
+                        candidate["vote"]+=1
+                    print(f"Voted to candidate with id {vote_to}")
+                else:
+                    print("Invalid candidate id")
             else:
-                candidate["vote"]+=1
-            print(f"Voted to candidate with id {vote_to}")
-        else:
-            print("Invalid candidate id")
+                print("No candidates to show")
+        except Exception as e:
+                print(e)
 
     
 
