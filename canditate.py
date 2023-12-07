@@ -91,14 +91,14 @@ class Candidate:
 
     def delete_candidate(self):
         try:
-                id=int(input("Enter your candidate id: eg 12,14.."))
-                candidate=next((i for i in self.candidates if i["id"]==id),None)
-                if candidate:      
-                    self.candidates.remove(candidate)
-                    print("Candidate removed successfully")
-                else:
-                    print("Invalid candidate Id")
-            
+            id=int(input("Enter your candidate id: eg 12,14.."))
+            candidate=next((i for i in self.candidates if i["id"]==id),None)
+            if candidate and not candidate["vote_count"]:      
+                self.candidates.remove(candidate)
+                print("Candidate removed successfully")
+            else:
+                print("Cannot delete the Candidate")
+        
 
         except Exception as e:
             print("update_candidate",e)
