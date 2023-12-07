@@ -1,8 +1,11 @@
 import json
 from datetime import datetime
 
+from helper import load_from_file
+
 class Idcounter:
     id = 0
+
     
     @classmethod
     def get_next_id(cls):
@@ -15,7 +18,11 @@ class Idcounter:
         return cls.id
 
 class Voter:
-    voter_list = []
+    filename="voterlist.txt"
+
+    def __init__(self) -> None:
+        self.voter_list = []
+        self.voter_list.extend(load_from_file())
 
     
     def registration(self):
@@ -42,10 +49,9 @@ class Voter:
         age = self.calculate_age(dob)
         
         if age >= 18:
-            voter_dict = {'id': voter_id, 'name': name, 'dob': dob_str, 'address': address, 'password': password}
+            voter_dict = {'id': voter_id, "role":"voter",'name': name, 'dob': dob_str, 'address': address, 'password': password}
             self.voter_list.append(voter_dict)
-            with open('voterlist.txt', 'a') as file:
-                file.write(json.dumps(voter_dict) + '\n')
+            print('Voter added')
         else:
             print('You are a minor!!')
 
@@ -89,10 +95,6 @@ class Voter:
                         data_list[i]['address'] = address
                     if len(password) > 0:
                         data_list[i]['password'] = password
-                    
-            with open('voterlist.txt', 'w') as file:
-                for data in data_list:
-                    file.write(json.dumps(data) + '\n')
 
             print('Voter information updated successfully.')
         else:

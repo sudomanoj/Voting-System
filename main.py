@@ -8,6 +8,7 @@ class ElectionManger:
         self.candidate=Candidate()
         self.voter=Voter()
         self.constituency=Constituency()
+        self.user=""
 
 
     def print_help(self):
@@ -27,6 +28,13 @@ class ElectionManger:
 
             ''')
     
+    def login_user(self):
+        id=input("Enter your name: ").strip()
+        password=str(input("Enter your password")).strip()
+        ids=[v["id"] for v in self.voter.voter_list]
+
+
+    
     def run_election(self):
         self.print_help()
         while True:
@@ -34,6 +42,7 @@ class ElectionManger:
             match command:
 
                 case "1":
+
                     self.constituency.election()                    
 
                 case "2":
