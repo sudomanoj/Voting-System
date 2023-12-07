@@ -1,6 +1,6 @@
 from datetime import datetime
 
-class Election:
+class Constituency:
     def __init__(self):
         print('######Election#####')
         
