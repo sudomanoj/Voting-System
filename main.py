@@ -53,31 +53,34 @@ class ElectionManger:
             match command:
 
                 case "1":
-                    if self.user:
+                    if self.user and self.user["role"]=="admin":
                         self.constituency.election() 
                     else:
-                        print("Please login to proceed")
+                        print("Please login to proceed, Also you must be admin")
                         self.login_user()                   
 
                 case "2":
-                    if self.user:
+                    if self.user and self.user["role"]=="admin":
                         self.candidate.add_candidate()
                     else:
-                        print("Please login to proceed")
+                        print("Please login to proceed, Also you must be admin")
+
                         self.login_user()    
                     
                 case "3":
-                    if self.user:
+                    if self.user and self.user["role"]=="admin":
                         self.candidate.update_candidate()
                     else:
-                        print("Please login to proceed")
+                        print("Please login to proceed, Also you must be admin")
+
                         self.login_user()   
 
                 case "4":
-                    if self.user:
+                    if self.user and self.user["role"]=="admin":
                         self.candidate.delete_candidate()
                     else:
-                        print("Please login to proceed")
+                        print("Please login to proceed, Also you must be admin")
+
                         self.login_user()   
 
                 case "5":
@@ -90,14 +93,16 @@ class ElectionManger:
                     self.voter.search_voter()
 
                 case "8":
-                    if self.user:
+                    if self.user  and self.user["role"]=="admin":
                         self.voter.delete_voter()
                     else:
-                        print("Please login to proceed")
+                        print("Please login to proceed, Also you must be admin")
                         self.login_user()  
+
+                        
                 case "9":
-                    if self.user:
-                        self.election.vote(self.candidate.candidates,self.user["id"])
+                    if self.user and self.user["role"]=="voter":
+                        self.election.vote(self.candidate.candidates)
                     else:
                         print("Please login to proceed")
                         self.login_user()  
