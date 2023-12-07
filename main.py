@@ -1,5 +1,7 @@
 from canditate import Candidate
 from constituency import Constituency
+from election import Election
+from helper import save_to_file
 from voter import Voter
 
 
@@ -8,7 +10,8 @@ class ElectionManger:
         self.candidate=Candidate()
         self.voter=Voter()
         self.constituency=Constituency()
-        self.user=""
+        self.election=Election()
+        self.user={}
 
 
     def print_help(self):
@@ -31,7 +34,15 @@ class ElectionManger:
     def login_user(self):
         id=input("Enter your name: ").strip()
         password=str(input("Enter your password")).strip()
-        ids=[v["id"] for v in self.voter.voter_list]
+        user=next((v for v in self.voter.voter_list if v["id"]==id),None)
+        if user and user["password"]==password:
+            self.user=user
+            print("You are authenticated, Go on\n")
+        else:
+            print("You are not authenticated, Invalid Credentials")
+        
+
+
 
 
     
@@ -42,17 +53,32 @@ class ElectionManger:
             match command:
 
                 case "1":
-
-                    self.constituency.election()                    
+                    if self.user:
+                        self.constituency.election() 
+                    else:
+                        print("Please login to proceed")
+                        self.login_user()                   
 
                 case "2":
-                    self.candidate.add_candidate()
+                    if self.user:
+                        self.candidate.add_candidate()
+                    else:
+                        print("Please login to proceed")
+                        self.login_user()    
                     
                 case "3":
-                    self.candidate.update_candidate()
+                    if self.user:
+                        self.candidate.update_candidate()
+                    else:
+                        print("Please login to proceed")
+                        self.login_user()   
 
                 case "4":
-                    self.candidate.delete_candidate()
+                    if self.user:
+                        self.candidate.delete_candidate()
+                    else:
+                        print("Please login to proceed")
+                        self.login_user()   
 
                 case "5":
                     self.voter.registration()
@@ -64,13 +90,27 @@ class ElectionManger:
                     self.voter.search_voter()
 
                 case "8":
-                    self.voter.delete_voter()
+                    if self.user:
+                        self.voter.delete_voter()
+                    else:
+                        print("Please login to proceed")
+                        self.login_user()  
+                case "9":
+                    if self.user:
+                        self.election.vote(self.candidate.candidates,self.user["id"])
+                    else:
+                        print("Please login to proceed")
+                        self.login_user()  
 
                 case "h":
                     self.print_help()
                     
                 case "e":
-                    print("Exitting")
+                    print("Exitting...")
+                    print(f"Saving candidates data to {self.candidate.filename}")
+                    save_to_file(self.candidate.filename,self.candidate.candidates)
+                    print(f"Saving Voters data to {self.voter.filename}")
+                    save_to_file(self.voter.filename,self.voter.voter_list)
                     break
 
                 case _:
