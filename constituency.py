@@ -6,7 +6,7 @@ class Constituency:
         print('###### Election #####')
 
     def election(self):
-        area = input('Enter Constituency: ')
+        area = input('Enter Constituency Area: ')
         date_of_election = input('Enter date (YYYY-MM-DD): ')
         area_exists = self.check_area(area)
 
@@ -33,7 +33,3 @@ class Constituency:
                 if data['constituency'].lower() == area.lower():
                     return True
         return False
-
-
-c = Constituency()
-c.election()
