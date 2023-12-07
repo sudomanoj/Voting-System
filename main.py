@@ -105,9 +105,20 @@ class ElectionManger:
                     if self.user and self.user["role"]=="voter":
                         data=load_from_file("constituency.txt")
                         if data["date_of_election"]==date.today():
-                            self.election.vote(self.candidate.candidates)
+                            if not self.user["vote"]:
+                                self.election.vote(self.candidate.candidates)
+                            else:
+                                print("You have already voted")
                         else:
                             print("Election is not today,You cannot vote now")
+
+                    else:
+                        print("Please login to proceed")
+                        self.login_user()  
+                
+                case "0":
+                    if self.user and self.user["role"]=="admin":
+                        self.election.result(self.candidate.candidates)
 
                     else:
                         print("Please login to proceed")
