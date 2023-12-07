@@ -22,7 +22,7 @@ class Voter:
 
     def __init__(self) -> None:
         self.voter_list = []
-        self.voter_list.extend(load_from_file())
+        self.voter_list.extend(load_from_file(self.filename))
 
     
     def registration(self):
