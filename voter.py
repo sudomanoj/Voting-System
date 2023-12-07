@@ -16,7 +16,7 @@ class Idcounter:
 
 class Voter:
     voter_list = []
-    
+
     
     def registration(self):
         while True:
@@ -144,6 +144,3 @@ Password : {data['password']}
         else:
             print(f'Voter with ID {voter_id} not found!!')
         
-# Example usage
-v = Voter()
-v.search_voter()

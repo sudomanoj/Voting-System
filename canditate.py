@@ -18,36 +18,33 @@ class Candidate:
 
 
 
-    def add_candidate(self,user):
+    def add_candidate(self):
         try:
-            if user["role"]=="admin":
-                can={}            
-                name=str(input("Enter your name: ")).strip()
-                party=str(input("Enter your party name: ")).strip()
-                cfrom=str(input("Enter from where you are taking candency: ")).strip()
-                if name and party and cfrom:
-                    can.update({"cname":name,"cparty":party,"cfrom":cfrom})
-                    if any(candidate["cname"] == can["cname"] and candidate["cparty"] == can["cparty"] and
-                           candidate["cfrom"] == can["cfrom"] for candidate in self.candidates):
-                        print("Candidate already exists")
-                    else:
-                        self.update_id()
-                        can["id"]=self.sn
-                        self.candidates.append(can)
-                        self.sn+=1
-                        print("Candidate added")
+            can={}            
+            name=str(input("Enter your name: ")).strip()
+            party=str(input("Enter your party name: ")).strip()
+            cfrom=str(input("Enter from where you are taking candency: ")).strip()
+            if name and party and cfrom:
+                can.update({"cname":name,"cparty":party,"cfrom":cfrom})
+                if any(candidate["cname"] == can["cname"] and candidate["cparty"] == can["cparty"] and
+                        candidate["cfrom"] == can["cfrom"] for candidate in self.candidates):
+                    print("Candidate already exists")
                 else:
-                    print("You must fill all the required fields")
+                    self.update_id()
+                    can["id"]=self.sn
+                    self.candidates.append(can)
+                    self.sn+=1
+                    print("Candidate added")
             else:
-                print("You must be admin for this operation")
+                print("You must fill all the required fields")
+
             
 
         except Exception as e:
             print("add_candidate",e)
 
-    def update_candidate(self,user):
+    def update_candidate(self):
         try:
-            if user["role"]=="admin":
                 id=int(input("Enter your candidate id: eg 12,14.."))
                 candidate=next((i for i in self.candidates if i["id"]==id),None)
                 if candidate:      
@@ -85,8 +82,6 @@ class Candidate:
                 else:
                     print("Invalid candidate Id")
 
-            else:
-                print("You must be admin for this operation")
             
 
         except Exception as e:
@@ -94,9 +89,8 @@ class Candidate:
 
 
 
-    def delete_candidate(self,user):
+    def delete_candidate(self):
         try:
-            if user["role"]=="admin":
                 id=int(input("Enter your candidate id: eg 12,14.."))
                 candidate=next((i for i in self.candidates if i["id"]==id),None)
                 if candidate:      
@@ -104,9 +98,6 @@ class Candidate:
                     print("Candidate removed successfully")
                 else:
                     print("Invalid candidate Id")
-
-            else:
-                print("You must be admin for this operation")
             
 
         except Exception as e:
@@ -132,26 +123,3 @@ class Candidate:
             print("view_candidate",e)
 
 
-c=Candidate()
-user={"role":"admin"}
-while True:
-    command=str(input("Enter your choice"))
-    match command:
-
-        case "a":
-            c.add_candidate(user)
-
-        case "u":
-            c.update_candidate(user)
-
-        case "d":
-            c.delete_candidate(user)
-
-        case "v":
-            c.view_candidate()
-        case "e":
-            print("Exitting")
-            save_to_file(c.filename,c.candidates)
-            break
-        case _:
-            print("Invalid command")
