@@ -17,6 +17,7 @@ class Idcounter:
 class Voter:
     voter_list = []
     
+    
     def registration(self):
         while True:
             voter_id = Idcounter.get_next_id()
