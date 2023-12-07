@@ -56,16 +56,12 @@ class Voter:
             print('You are a minor!!')
 
     def check_voter(self, name, dob, address):
-        with open('voterlist.txt', 'r') as file:
-            data_list = [json.loads(line) for line in file]
-            for data in data_list:
-                if (
-                    data['name'].lower() == name.lower()
-                    and str(data['dob']) == str(dob)  
-                    and data['address'].lower() == address.lower()
-                ):
+        if self.voter_list:
+            for voter in self.voter_list:
+                if any(voter['name'] ==name and voter['dob'] == dob and voter['address'] == address):
                     return True
-        return False
+        else:
+            return False
 
     
     def calculate_age(self, dob):
@@ -80,8 +76,7 @@ class Voter:
         voter_id = int(input('Enter ID: '))
         voter_exists = self.exists_voter(voter_id)
         if voter_exists:
-            with open('voterlist.txt', 'r') as file:
-                data_list = [json.loads(line) for line in file]
+            data_list = self.voter_list
             for i, data in enumerate(data_list):
                 if data['id'] == voter_id:
                     name = input('Enter new Name: ')
@@ -103,11 +98,12 @@ class Voter:
         
         
     def exists_voter(self, id):
-        with open('voterlist.txt', 'r') as file:
-            data_list = [json.loads(line) for line in file]
-        for data in data_list:
-            if data['id'] == id:
-                return True
+        if self.voter_list:
+            for voter in self.voter_list:
+                if id == voter['id']:
+                    return True
+                else:
+                    return False
         return False
     
     def delete_voter(self):
@@ -131,10 +127,7 @@ class Voter:
         voter_id = int(input('Enter VoterID: '))
         voter_exists = self.exists_voter(voter_id)
         if voter_exists:
-            with open('voterlist.txt', 'r') as file:
-                data_list = [json.loads(line) for line in file]
-            for data in data_list:
-                if data['id'] == voter_id:
+            for data in self.voter_list:
                     print(f"""
 ID : {data['id']}
 Name : {data['name']}
