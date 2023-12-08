@@ -39,7 +39,7 @@ class ElectionManger:
     def login_user(self):
         try:
             id=int(input("Enter your id: "))
-            password=str(input("Enter your password")).strip()
+            password=str(input("Enter your password: ")).strip()
             user=next((v for v in self.voter.voter_list if v["id"]==id),None)
             if user and user["password"]==password:
                 self.user=user
