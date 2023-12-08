@@ -14,6 +14,11 @@ class Candidate:
         self.sn = max(id_values) + 1 if id_values else 1
 
         
+    def check_duplicate(self,can):
+        if any(candidate["cname"] == can["cname"] and candidate["cparty"] == can["cparty"] and
+                        candidate["cfrom"] == can["cfrom"] for candidate in self.candidates):
+                    return 1
+        return 0
             
 
 
@@ -26,9 +31,8 @@ class Candidate:
             cfrom=str(input("Enter from where you are taking candency: ")).strip()
             if name and party and cfrom:
                 can.update({"cname":name,"cparty":party,"cfrom":cfrom})
-                if any(candidate["cname"] == can["cname"] and candidate["cparty"] == can["cparty"] and
-                        candidate["cfrom"] == can["cfrom"] for candidate in self.candidates):
-                    print("Candidate already exists")
+                if self.check_duplicate(can):
+                    print("User with same details already exists")
                 else:
                     self.update_id()
                     can["id"]=self.sn
@@ -52,23 +56,8 @@ class Candidate:
                     party=str(input("Enter your party name: ")).strip()
                     cfrom=str(input("Enter from where you are taking candency: ")).strip()
 
-                    # check if the same candidate exists already
-                    found=0
-                    if name:
-                        names=[c["cname"] for c in self.candidates ]
-                        if name in names:
-                            found+=1
-                    if party:
-                        parties=[c["cparty"] for c in self.candidates ]
-                        if party in parties:
-                            found+=1
-                    if cfrom:
-                        fromc=[c["cfrom"] for c in self.candidates ]
-                        if cfrom in fromc:
-                            found+=1
-
-                    # update candidate if same candidate doesnot exist
-                    if not found==3:
+                   
+                    if not self.check_duplicate({"cname":name,"cparty":party,"cfrom":cfrom}):
                         if name:
                             candidate["cname"]=name
                         if party:
