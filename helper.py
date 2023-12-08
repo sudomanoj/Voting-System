@@ -4,7 +4,7 @@ def save_to_file(filename,data):
         with open(filename, 'w') as file:
             
             json.dump(data, file, indent=2)
-        print(f"\nData saved to {filename} as JSON.")
+        print(f"\nData saved to {filename}.")
     except Exception as e:
         print(f"Error saving  data: {e}")
 
