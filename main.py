@@ -29,6 +29,7 @@ class ElectionManger:
             9 --> vote\n
             10 --> view candidates\n
             11 --> view voters\n
+            a --> Promote to admin\n
             l --> login with new user\n
             h --> help\n
             e --> exit\n
