@@ -17,21 +17,21 @@ class ElectionManger:
 
     def print_help(self):
         print('''
-            0 --> result
-            1 --> schedule
-            2 --> register candidate
-            3 --> update candidate
-            4 --> delete candidate
-            5 --> register voter
-            6 --> update voter
-            7 --> search voter
-            8 --> delete voter
-            9 --> vote
-            10 --> view candidates
-            11 --> view voters              
-            l --> login with new user              
-            h --> help
-            e --> exit
+            0 --> result\n
+            1 --> schedule\n
+            2 --> register candidate\n
+            3 --> update candidate\n
+            4 --> delete candidate\n
+            5 --> register voter\n
+            6 --> update voter\n
+            7 --> search voter\n
+            8 --> delete voter\n
+            9 --> vote\n
+            10 --> view candidates\n
+            11 --> view voters\n
+            l --> login with new user\n
+            h --> help\n
+            e --> exit\n
 
             ''')
     
@@ -135,7 +135,6 @@ class ElectionManger:
                                         if not self.user["voted"]:
                                             self.election.vote(self.candidate.candidates)
                                             self.user["voted"]+=1
-                                            self.user={}
                                         else:
                                             print("You have already voted")
                                     else:
