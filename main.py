@@ -112,7 +112,7 @@ class ElectionManger:
                     case "9":
                         try:
                             if self.user and self.user["role"]=="voter":
-                                data=load_from_file("constituency.txt")
+                                data=load_from_file(self.constituency.filename)
                                 if not data:
                                     print("No election scheduled")
                                     continue
@@ -121,13 +121,14 @@ class ElectionManger:
                                     if not self.user["voted"]:
                                         self.election.vote(self.candidate.candidates)
                                         self.user["voted"]+=1
+                                        self.user={}
                                     else:
                                         print("You have already voted")
                                 else:
                                     print("Election is not today,You cannot vote now")
 
                             else:
-                                print("Please login to proceed")
+                                print("Please login to proceed, Only voter can vote")
                                 self.login_user()  
                         except Exception as e:
                             print(e)
@@ -171,6 +172,14 @@ class ElectionManger:
                     case _:
                         print("Invalid command")
                         self.print_help()
+                        
+        except KeyboardInterrupt as e:
+            print("\nExitting...")
+            print(f"Saving candidates data to {self.candidate.filename}")
+            save_to_file(self.candidate.filename,self.candidate.candidates)
+            print(f"Saving Voters data to {self.voter.filename}")
+            save_to_file(self.voter.filename,self.voter.voter_list)
+            print(e)
         except Exception as e:
             print(e)
 

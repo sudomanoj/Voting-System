@@ -2,6 +2,7 @@ import json
 from datetime import datetime
 
 class Constituency:
+    filename='data/constituency.txt'
     def __init__(self):
         print('###### Election #####')
 
@@ -21,7 +22,7 @@ class Constituency:
                     print('Please provide a valid area!')
                 else:
                     constituency_dict = {'constituency': area, 'date_of_election': str(doe)}
-                    with open('constituency.txt', 'a') as file:
+                    with open(self.filename, 'a') as file:
                         file.write(json.dumps(constituency_dict) + '\n')
                     print('Election details saved successfully.')
             else:
@@ -35,7 +36,7 @@ class Constituency:
             
     def check_area(self, area):
         try:
-            with open('constituency.txt', 'r') as file:
+            with open(self.filename, 'r') as file:
                 data_list = [json.loads(line) for line in file]
                 for data in data_list:
                     if data['constituency'].lower() == area.lower():

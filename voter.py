@@ -8,7 +8,7 @@ from helper import load_from_file
 
 class Voter:
     id = 0
-    filename="voterlist.txt"
+    filename="data/voterlist.txt"
 
     def get_next_id(self):
         data=self.voter_list

@@ -3,7 +3,7 @@ from helper import load_from_file, save_to_file
 
 class Candidate:
     sn=0
-    filename="candidates.txt"
+    filename="data/candidates.txt"
     def __init__(self):
         self.candidates=[]
         self.candidates.extend(load_from_file(self.filename))

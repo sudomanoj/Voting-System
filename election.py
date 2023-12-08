@@ -2,6 +2,7 @@ from helper import save_to_file
 
 
 class Election:
+    filename="data/Election_result.txt"
     def __init__(self):
         print("Election Started")
 
@@ -25,11 +26,8 @@ class Election:
                         ))
                 vote_to=int(input("Enter Candidate id"))
                 candidate=next((i for i in cands if i["id"]==vote_to),None)
-                if candidate:
-                    if not candidate["vote_count"]:
-                        candidate["vote_count"]=1
-                    else:
-                        candidate["vote_count"]+=1
+                if candidate:                    
+                    candidate["vote_count"]+=1
                     print(f"Voted to candidate with id {vote_to}")
                 else:
                     print("Invalid candidate id")
@@ -41,12 +39,12 @@ class Election:
     def result(self,cands):
         try:
             if cands:
-                sorted_cands = sorted(cands, key=lambda c: c['vote_count']) 
+                sorted_cands = sorted(cands, key=lambda c: c['vote_count'],reverse=True) 
                 winner=sorted_cands[0]
                 winner_name=winner["cname"]
                 winner_from=winner["cfrom"]
                 winner_party=winner["cparty"]
-                print(f"{winner_name} from {winner_from} of party {winner_party} wins the election")
+                print(f"{winner_name} from party {winner_party} who has taken candidancy from {winner_from} wins the election")
                 ins=["id","name","from","party"]
                 print("\nCandidate Information:")
                 print("\n| {:^4} | {:^20} | {:^20} | {:^20} | \n".format(
@@ -62,7 +60,7 @@ class Election:
                             c["cfrom"],
                             c["cparty"]
                         ))
-                save_to_file("Election_result.txt",sorted_cands)
+                save_to_file(self.filename,sorted_cands)
 
         except Exception as e:
             print(e)
