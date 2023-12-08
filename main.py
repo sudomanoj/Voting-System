@@ -63,7 +63,11 @@ class ElectionManger:
 
                     case "1":
                         if self.user and self.user["role"]=="admin":
-                            self.constituency.election() 
+                            data=load_from_file(self.constituency.filename)
+                            if not data:
+                                self.constituency.election() 
+                            else:
+                                print("You already have scheduled an election")
                         else:
                             print("Please login to proceed, Also you must be admin")
                             self.login_user()                   
