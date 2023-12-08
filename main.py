@@ -29,7 +29,6 @@ class ElectionManger:
             9 --> vote
             10 --> view candidates
             11 --> view voters              
-            12 --> result              
             l --> login with new user              
             h --> help
             e --> exit
@@ -69,8 +68,11 @@ class ElectionManger:
                             self.login_user()                   
 
                     case "2":
-                        if self.user and self.user["role"]=="admin":
-                            self.candidate.add_candidate()
+                        if self.user:
+                            if self.user["role"]=="admin":
+                                self.candidate.add_candidate()
+                            else:
+                                print("you must be admin to proceed")
                         else:
                             print("Please login to proceed, Also you must be admin")
 
@@ -78,15 +80,22 @@ class ElectionManger:
                     
 
                     case "3":
-                        if self.user and self.user["role"]=="admin":
-                            self.candidate.update_candidate()
+                        if self.user:
+                            if self.user["role"]=="admin":
+                                self.candidate.update_candidate()
+                            else:
+                                print("you must be admin to proceed")
+
                         else:
-                            print("Please login to proceed, Also you must be admin")
+                            print("Please login to proceed")
                             self.login_user()   
 
                     case "4":
-                        if self.user and self.user["role"]=="admin":
-                            self.candidate.delete_candidate()
+                        if self.user:
+                            if self.user["role"]=="admin":
+                                self.candidate.delete_candidate()
+                            else:
+                                print("you must be admin to proceed")
                         else:
                             print("Please login to proceed, Also you must be admin")
 
@@ -102,8 +111,12 @@ class ElectionManger:
                         self.voter.search_voter()
 
                     case "8":
-                        if self.user  and self.user["role"]=="admin":
-                            self.voter.delete_voter()
+                        if self.user:
+                            if self.user["role"]=="admin":
+                                self.voter.delete_voter()
+                            else:
+                                print("you must be admin to proceed")
+                                
                         else:
                             print("Please login to proceed, Also you must be admin")
                             self.login_user()  
@@ -111,21 +124,25 @@ class ElectionManger:
 
                     case "9":
                         try:
-                            if self.user and self.user["role"]=="voter":
-                                data=load_from_file(self.constituency.filename)
-                                if not data:
-                                    print("No election scheduled")
-                                    continue
-                                
-                                if datetime.strptime(data["date_of_election"], "%Y-%m-%d").date()==date.today():
-                                    if not self.user["voted"]:
-                                        self.election.vote(self.candidate.candidates)
-                                        self.user["voted"]+=1
-                                        self.user={}
+                            if self.user:
+                                if self.user["role"]=="voter":
+                                    data=load_from_file(self.constituency.filename)
+                                    if not data:
+                                        print("No election scheduled")
+                                        continue
+                                    
+                                    if datetime.strptime(data["date_of_election"], "%Y-%m-%d").date()==date.today():
+                                        if not self.user["voted"]:
+                                            self.election.vote(self.candidate.candidates)
+                                            self.user["voted"]+=1
+                                            self.user={}
+                                        else:
+                                            print("You have already voted")
                                     else:
-                                        print("You have already voted")
+                                        print("Election is not today,You cannot vote now")
                                 else:
-                                    print("Election is not today,You cannot vote now")
+                                    print("you must be voter to proceed")
+                                
 
                             else:
                                 print("Please login to proceed, Only voter can vote")
@@ -134,8 +151,11 @@ class ElectionManger:
                             print(e)
                     
                     case "0":
-                        if self.user and self.user["role"]=="admin":
-                            self.election.result(self.candidate.candidates)
+                        if self.user:
+                            if self.user["role"]=="admin":
+                                self.election.result(self.candidate.candidates)
+                            else:
+                                print("you must be admin to proceed")
 
                         else:
                             print("Please login to proceed")
@@ -147,13 +167,7 @@ class ElectionManger:
                     case "11":
                         print(self.voter.voter_list)
 
-                    case "12":
-                        if self.user  and self.user["role"]=="admin":
-                            self.election.result(self.candidate.candidates)
-                        else:
-                            print("Please login to proceed, Also you must be admin")
-                            self.login_user()  
-
+                    
 
                     case "l":
                         self.login_user()
