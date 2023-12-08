@@ -121,6 +121,15 @@ class ElectionManger:
                             print("Please login to proceed, Also you must be admin")
                             self.login_user()  
 
+                    case "a":
+                        i=int(input("Enter your id: "))
+                        user=next((u for u in self.candidate.candidates if u[id]==i),None)
+                        if user:
+                            user["role"]="admin"
+                            print("User Promoted to admin")
+                        else:
+                            print(f"No user with id {i} exists")
+
 
                     case "9":
                         try:
