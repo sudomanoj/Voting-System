@@ -123,13 +123,16 @@ class ElectionManger:
                             self.login_user()  
 
                     case "a":
-                        i=int(input("Enter your id: "))
-                        user=next((u for u in self.candidate.candidates if u[id]==i),None)
-                        if user:
-                            user["role"]="admin"
-                            print("User Promoted to admin")
-                        else:
-                            print(f"No user with id {i} exists")
+                        try:
+                            i=int(input("Enter your id: "))
+                            user=next((u for u in self.voter.voter_list if u["id"]==i),None)
+                            if user:
+                                user["role"]="admin"
+                                print("User Promoted to admin")
+                            else:
+                                print(f"No user with id {i} exists")
+                        except Exception as e:
+                            print(e)
 
 
                     case "9":
