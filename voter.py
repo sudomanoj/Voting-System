@@ -114,13 +114,14 @@ class Voter:
         voter_exists = self.exists_voter(voter_id)
         if voter_exists:
             for data in self.voter_list:
+                if data['id'] == voter_id:
                     print(f"""
 ID : {data['id']}
 Name : {data['name']}
 DOB : {data['dob']}
 Address : {data['address']}
 Password : {data['password']}
-                          """)
+                        """)
 
         else:
             print(f'Voter with ID {voter_id} not found!!')
