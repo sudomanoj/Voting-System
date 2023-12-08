@@ -182,6 +182,17 @@ class ElectionManger:
 
                     case "11":
                         print(self.voter.voter_list)
+                        for v in self.voter.voter_list:
+                            print(
+                                f'''
+***************                                
+id={v["id"]}
+Name={v["name"]}
+Address={v["name"]}
+Voted={v["voted"]}
+Password={v["password"]}
+****************                                '''
+                            )
 
                     
 
